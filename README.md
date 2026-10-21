@@ -19,7 +19,7 @@ Edit **content/portfolio.ts** to update the site without changing React componen
 
 - **Hero:** upload an authorized MP4/WebM to `public/media/hero/`. Set `site.hero` to `{ src: '/media/hero/film.mp4', poster: '/media/hero/poster.jpg', kind: 'local', label: 'Hero film' }`. A local hero autoplays muted, looped and inline. It is never preloaded; a CSS composition remains behind it. Keep the file short and compressed. Hero video requires a poster.
 - **Showreel:** upload to `public/media/showreel/` and set `site.reel` with the same fields. Recommended edit: 60–75 seconds. Native controls provide playback, volume and fullscreen. Missing or failed local media displays an honest fallback.
-- **External films:** set `kind: 'vimeo'` or `'youtube'` and `src` to the numeric Vimeo ID or YouTube video ID, not a full URL. The embed loads only after a click, with keyboard-accessible activation and fullscreen support. Ensure Vimeo domain embedding is allowed. Autoplay audio is never enabled.
+- **External films:** set `kind: 'vimeo'` or `'youtube'` and `src` to the numeric Vimeo ID or YouTube video ID, not a full URL. The embed loads only after a click, with keyboard-accessible activation and fullscreen support. Ensure Vimeo domain embedding is allowed. External playback starts only after a visitor presses play.
 - **Projects:** add a typed record to `projects`. Use a unique URL-safe `slug`; fill `title`, `client`, verified `year` (or empty string), `category`, `role`, `description`, `approach`, `lighting`, `credits`, `featured`, and `tone` (`amber`, `blue`, `olive`, `clay`). `media` accepts a local film or embed and an approved poster. `gallery` is an array of `{ src, alt }`. Routes, filters and sitemap update automatically. Rebuild after content edits.
 - **Images:** put authorized stills in `public/media/projects/`; use local paths beginning `/media/`. Project posters are lazy loaded; gallery images use Next Image. Missing posters show abstract typography explicitly labeled “film still pending,” never illustrative photographs passed off as work. Supply optimized 16:9 images with descriptive alt text.
 - **Portrait:** set `site.portrait` to `{ src: '/media/portraits/sachin.jpg', alt: 'Sachin Verma on set' }` using the actual photograph.
@@ -43,8 +43,12 @@ The producer route prioritizes a concise introduction, immediate reel access, re
 
 ## Deploy on Netlify
 
-Import this repository through **Add new project → Import an existing project → GitHub**. Select the main branch and repository root. `netlify.toml` specifies `npm run build`, `.next`, and Node 24. Netlify automatically enables its Next.js runtime; do not use a static drag-and-drop deployment of `.next`.
+Import this repository through **Add new project → Import an existing project → GitHub**. Select the main branch and repository root. `netlify.toml` runs the content check and production build, publishes `.next`, and uses Node 24. Netlify automatically enables its Next.js runtime; do not use a static drag-and-drop deployment of `.next`.
 
 After the first deployment gives you a site URL, add `NEXT_PUBLIC_SITE_URL` with that HTTPS origin (no trailing slash) in the site's environment variables, then redeploy. Replace it with your preferred canonical domain if you add one. Check `/`, `/about`, `/for-producers`, every project route, `/sitemap.xml`, `/robots.txt` and `/opengraph-image`. Footage and the resume remain explicitly pending until supplied.
 
 The production Netlify project is `portfolisachin`, connected to `cashcow-edit/PersonalWebApp` on `main`. Push the application and `netlify.toml` together so Netlify builds the Next.js app rather than serving the legacy root HTML. The canonical URL defaults to `https://portfolisachin.netlify.app`; `NEXT_PUBLIC_SITE_URL` takes precedence, followed by Netlify's `URL` variable. Never put authentication tokens in either public variable. `.netlify/` is ignored to keep local site-link metadata out of Git.
+
+## Finish the producer pitch
+
+See [CONTENT-HANDOFF.md](CONTENT-HANDOFF.md) for the complete placeholder inventory, exact asset requests for each project, configuration examples and final viewing checklist. Run `npm run content:check` before building to catch broken configured file paths, invalid video IDs and invalid resume files. The producer route promotes the first featured playable film when a reel has not yet been supplied, and supports inline playback of featured films. Set each project's `detailsPending` flag to `false` after confirming its complete details and credits.
