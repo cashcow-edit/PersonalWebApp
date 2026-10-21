@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Netlify automatically enables its Next.js runtime for this project.
+# Set NEXT_PUBLIC_SITE_URL to the assigned HTTPS site address, then rebuild.

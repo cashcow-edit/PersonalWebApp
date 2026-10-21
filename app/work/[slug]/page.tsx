@@ -1,0 +1,11 @@
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { projects } from '@/content/portfolio';
+import { MediaPlayer } from '@/components/media';
+import { Contact } from '@/components/ui';
+export function generateStaticParams(){return projects.map(p=>({slug:p.slug}))}
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const p=projects.find(p=>p.slug===slug);return {title:p?.title||'Project not found',description:p?.description}}
+export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=projects.find(p=>p.slug===slug);if(!p)notFound();const next=projects[(projects.indexOf(p)+1)%projects.length];return <main id="main"><section className={`project-hero section-pad ${p.tone}`}><Link className="text-link" href="/#work"><ArrowLeft size={16}/> All work</Link><div className="eyebrow">{p.category} {p.year&&`/ ${p.year}`}</div><h1>{p.title}<span>.</span></h1><p>{p.client}</p><span className="micro">{p.role}</span></section><section className="section-pad project-story"><MediaPlayer media={p.media} title={p.title}/><div className="story-grid"><h2>The story<br/><em>behind the frame.</em></h2><div><p className="large-copy">{p.description}</p><dl><div><dt>CAMERA APPROACH</dt><dd>{p.approach}</dd></div><div><dt>LIGHTING & VISUAL TREATMENT</dt><dd>{p.lighting}</dd></div>{p.credits.map(c=><div key={c.role}><dt>{c.role}</dt><dd>{c.name}</dd></div>)}</dl><p className="content-note">Experience record. Final film title, additional crew credits and approved media will be added once confirmed.</p></div></div>{p.gallery.length?<div className="film-gallery">{p.gallery.map(g=><Image key={g.src} src={g.src} alt={g.alt} width={1600} height={900}/>)}</div>:<div className="gallery-empty"><span className="eyebrow">FRAME STUDIES</span><p>Approved film frames and behind-the-scenes material to follow.</p></div>}<Link className="next-project" href={`/work/${next.slug}`}><span className="eyebrow">NEXT EXPERIENCE</span><span>{next.title}<ArrowUpRight/></span></Link></section><Contact/></main>}

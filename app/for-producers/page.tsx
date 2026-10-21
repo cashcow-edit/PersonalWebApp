@@ -1,0 +1,8 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import { site, projects, experience } from '@/content/portfolio';
+import { CopyButton, ResumeLink, Contact } from '@/components/ui';
+import { MediaPlayer } from '@/components/media';
+export const metadata:Metadata={title:'For Producers',description:'A concise introduction to Sachin Verma: commercial cinematography experience, selected projects, showreel and direct production contact.'};
+export default function Producers(){return <main id="main" className="producer-page"><section className="section-pad page-intro"><div className="producer-label"><span className="eyebrow">THE PRODUCER’S CUT</span><CopyButton share/></div><h1>Your story.<br/><em>A considered eye.</em></h1><div className="producer-intro"><p>Sachin Verma — Cinematographer / Director of Photography.<br/>Gurugram, India. Commercials, brand films, product films and independent narratives.</p><a className="button primary" href={`mailto:${site.email}?subject=Production%20enquiry`}>Discuss a production <ArrowUpRight size={17}/></a></div><MediaPlayer media={site.reel} title="Sachin Verma — Showreel"/><div className="producer-experience"><h2>Relevant experience</h2>{experience.map(e=><div key={e.studio}><span>{e.year}</span><h3>{e.studio}</h3><p>{e.title}</p></div>)}</div><div className="section-heading"><h2>Selected experience</h2><ResumeLink/></div><div className="producer-films">{projects.filter(p=>p.featured).map(p=><Link key={p.slug} href={`/work/${p.slug}`}><span>{p.category} / {p.year||'SC Foto Studio'}</span><h3>{p.title}<ArrowUpRight size={22}/></h3><p>{p.role}</p><small>Project details · Approved film pending</small></Link>)}</div></section><Contact/></main>}
